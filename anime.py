@@ -47,14 +47,15 @@ def main():
                     "評価": rating,
                     "コメント": comment.strip()
                 }
-                # 追加して保存
-                df = df.append(new_row, ignore_index=True)
+                # 修正箇所：append()の代わりにconcat()を使用
+                new_row_df = pd.DataFrame([new_row])
+                df = pd.concat([df, new_row_df], ignore_index=True)
                 save_data(df)
-                st.success(f"『{タイトル}』を登録しました！")
+                st.success(f"『{title.strip()}』を登録しました！")
 
     # 3. 登録されたアニメ一覧の表示
     st.subheader("アニメ一覧")
-    
+
     # 3-1. ジャンルで絞り込み
     all_genres = ["All"] + sorted(df["ジャンル"].unique().tolist())
     selected_genre = st.selectbox("絞り込み（ジャンル）", all_genres)
